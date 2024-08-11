@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { getPackageDependencies } from '../utils';
+import React, { useState, useEffect } from 'react';
+import { getPackageDependencies } from '../utils/dep';
+import { getNpmDepGraph } from '../utils/graph';
 
 const Home = () => {
   const [packageName, setPackageName] = useState('');
@@ -9,6 +10,14 @@ const Home = () => {
     const dependencies = await getPackageDependencies(packageName);
     setDependencies(dependencies);
   }
+
+  useEffect(() => {
+    const getDependencies = async () => {
+      const graph = await getNpmDepGraph('antd', '5.0.0');
+      console.log('graph=', graph);
+    }
+    getDependencies();
+  }, [])
 
   return (
     <div>
