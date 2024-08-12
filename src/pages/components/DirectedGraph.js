@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+import './DirectedGraph.css';  // 引入样式文件
 
 function DirectedGraph() {
   useEffect(() => {
-    const svg = d3.select("body")
+    const svg = d3.select("#d3-container")
       .append("svg")
-      .attr("width", 500)
-      .attr("height", 500);
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", [-window.innerWidth / 2, -window.innerHeight / 2, window.innerWidth, window.innerHeight]);
 
     // 定义箭头
     svg.append("defs").selectAll("marker")
@@ -41,7 +43,7 @@ function DirectedGraph() {
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(100))  // 增加链接的距离
       .force("charge", d3.forceManyBody().strength(-500))  // 增加节点之间的排斥力
-      .force("center", d3.forceCenter(250, 250));
+      .force("center", d3.forceCenter());  // 将力导向图的中心设置为SVG元素的中心
 
     const link = svg.append("g")
       .selectAll("line")
