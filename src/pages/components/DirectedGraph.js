@@ -39,13 +39,13 @@ function DirectedGraph({ nodes, links }) {  // 从props中获取nodes和links
       .style("stroke-width", d => Math.sqrt(d.value))
       .attr("marker-end", "url(#end)");  // 添加箭头
 
-    const node = svg.append("g")
+      const node = svg.append("g")
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
       .attr("r", 5)
-      .style("fill", "#69b3a2");
+      .style("fill", d => d.color || "#69b3a2");
 
     // 添加节点文字
     const text = svg.append("g")

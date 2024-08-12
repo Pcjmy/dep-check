@@ -4,11 +4,11 @@ import { getNpmDepGraph } from '../utils/graph';
 import DirectedGraph from './components/DirectedGraph';
 
 const nodes = [
-  { id: "Node 1" },
-  { id: "Node 2" },
-  { id: "Node 3" },
-  { id: "Node 4" },
-  { id: "Node 5" }
+  { id: "Node 1", color: "red" },
+  { id: "Node 2", color: "orange" },
+  { id: "Node 3", color: "aqua" },
+  { id: "Node 4", color: "pink" },
+  { id: "Node 5", color: "purple" },
 ];
 
 const links = [
