@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPackageDependencies } from '../utils/dep';
 import { getNpmDepGraph } from '../utils/graph';
+import DirectedGraph from './components/DirectedGraph';
 
 const Home = () => {
   const [packageName, setPackageName] = useState('');
@@ -19,23 +20,25 @@ const Home = () => {
     getDependencies();
   }, [])
 
-  return (
-    <div>
-      <input
-        type="text"
-        value={packageName}
-        onChange={e => setPackageName(e.target.value)}
-      />
-      <button onClick={handleClick}>Fetch Package Info</button>
-      {dependencies && (
-        <ul>
-          {Object.keys(dependencies).map(dependency => (
-            <li key={dependency}>{dependency}: {dependencies[dependency]}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+  return <DirectedGraph />;
+
+  // return (
+  //   <div>
+  //     <input
+  //       type="text"
+  //       value={packageName}
+  //       onChange={e => setPackageName(e.target.value)}
+  //     />
+  //     <button onClick={handleClick}>Fetch Package Info</button>
+  //     {dependencies && (
+  //       <ul>
+  //         {Object.keys(dependencies).map(dependency => (
+  //           <li key={dependency}>{dependency}: {dependencies[dependency]}</li>
+  //         ))}
+  //       </ul>
+  //     )}
+  //   </div>
+  // );
 };
 
 export default Home;
