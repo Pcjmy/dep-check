@@ -39,13 +39,34 @@ function DirectedGraph({ nodes, links }) {  // 从props中获取nodes和links
       .style("stroke-width", d => Math.sqrt(d.value))
       .attr("marker-end", "url(#end)");  // 添加箭头
 
-      const node = svg.append("g")
+    const node = svg.append("g")
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
       .attr("r", 5)
-      .style("fill", d => d.color || "#69b3a2");
+      .style("fill", d => d.color || "#69b3a2")
+      .call(d3.drag()  // 添加拖拽功能
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
 
     // 添加节点文字
     const text = svg.append("g")
