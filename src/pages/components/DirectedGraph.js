@@ -71,7 +71,7 @@ function DirectedGraph() {
       .append("text")
       .text(d => d.id)
       .attr("x", d => d.x)
-      .attr("y", d => d.y)
+      .attr("y", d => d.y - 10)  // 调整文字的位置，使其在节点上方
       .attr("dy", "0.35em");
 
     simulation.on("tick", () => {
@@ -87,7 +87,7 @@ function DirectedGraph() {
 
       text
         .attr("x", d => d.x)
-        .attr("y", d => d.y);
+        .attr("y", d => d.y - 10);  // 调整文字的位置，使其在节点上方
     });
   }, []);
 
