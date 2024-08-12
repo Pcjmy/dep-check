@@ -8,6 +8,20 @@ function DirectedGraph() {
       .attr("width", 500)
       .attr("height", 500);
 
+    // 定义箭头
+    svg.append("defs").selectAll("marker")
+      .data(["end"])
+      .enter().append("marker")
+      .attr("id", String)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 15)
+      .attr("refY", -1.5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M0,-5L10,0L0,5");
+
     const nodes = [
       { id: "Node 1" },
       { id: "Node 2" },
@@ -36,7 +50,8 @@ function DirectedGraph() {
       .append("line")
       .style("stroke", "#999")
       .style("stroke-opacity", 0.6)
-      .style("stroke-width", d => Math.sqrt(d.value));
+      .style("stroke-width", d => Math.sqrt(d.value))
+      .attr("marker-end", "url(#end)");  // 添加箭头
 
     const node = svg.append("g")
       .selectAll("circle")
