@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import './DirectedGraph.css';  // 引入样式文件
 
-function DirectedGraph() {
+function DirectedGraph({ nodes, links }) {  // 从props中获取nodes和links
   useEffect(() => {
     const svg = d3.select("#d3-container")
       .append("svg")
@@ -23,22 +23,6 @@ function DirectedGraph() {
       .attr("orient", "auto")
       .append("path")
       .attr("d", "M0,-5L10,0L0,5");
-
-    const nodes = [
-      { id: "Node 1" },
-      { id: "Node 2" },
-      { id: "Node 3" },
-      { id: "Node 4" },
-      { id: "Node 5" }
-    ];
-
-    const links = [
-      { source: "Node 1", target: "Node 2" },
-      { source: "Node 2", target: "Node 3" },
-      { source: "Node 3", target: "Node 4" },
-      { source: "Node 4", target: "Node 1" },
-      { source: "Node 5", target: "Node 2" }
-    ];
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(100))  // 增加链接的距离
@@ -89,7 +73,7 @@ function DirectedGraph() {
         .attr("x", d => d.x)
         .attr("y", d => d.y - 10);  // 调整文字的位置，使其在节点上方
     });
-  }, []);
+  }, [nodes, links]);  // 当nodes或links改变时，重新运行useEffect
 
   return <div id="d3-container"></div>;
 }
