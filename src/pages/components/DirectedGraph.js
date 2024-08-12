@@ -39,8 +39,8 @@ function DirectedGraph() {
     ];
 
     const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id))
-      .force("charge", d3.forceManyBody())
+      .force("link", d3.forceLink(links).id(d => d.id).distance(100))  // 增加链接的距离
+      .force("charge", d3.forceManyBody().strength(-500))  // 增加节点之间的排斥力
       .force("center", d3.forceCenter(250, 250));
 
     const link = svg.append("g")
@@ -61,6 +61,17 @@ function DirectedGraph() {
       .attr("r", 5)
       .style("fill", "#69b3a2");
 
+    // 添加节点文字
+    const text = svg.append("g")
+      .selectAll("text")
+      .data(nodes)
+      .enter()
+      .append("text")
+      .text(d => d.id)
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("dy", "0.35em");
+
     simulation.on("tick", () => {
       link
         .attr("x1", d => d.source.x)
@@ -71,6 +82,10 @@ function DirectedGraph() {
       node
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
+
+      text
+        .attr("x", d => d.x)
+        .attr("y", d => d.y);
     });
   }, []);
 
