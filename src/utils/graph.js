@@ -30,25 +30,35 @@ class Graph {
   }
 
   bfs() {
+    const nodes = []
+    const links = []
     const queue = [this.start];
+    const start_node = {id: `${this.start.name}@${this.start.version}`, color: 'red'};
+    nodes.push(start_node)
     const visited = new Set();
-    visited.add(this.start);
+    visited.add(start_node.id);
 
     while (queue.length) {
       const node = queue.shift();
-      console.log(node);
+      // console.log(node);
       const neighbors = this.adjacencyList.get(node);
       for (const neighbor of neighbors) {
-        if (!visited.has(neighbor)) {
-          visited.add(neighbor);
+        const v1 = {id: `${node.name}@${node.version}`, color:'red'}
+        const v2 = {id: `${neighbor.name}@${neighbor.version}`, color:'red'}
+        if (!visited.has(v2.id)) {
+          links.push({source: v1.id, target: v2.id})
+          nodes.push(v2);
+          visited.add(v2.id);
           queue.push(neighbor);
         }
       }
     }
+    
+    return { nodes, links }
   }
 }
 
-export const getNpmDepGraph = async (packageName, version, maxDepth = 5) => {
+export const getNpmDepGraph = async (packageName, version, maxDepth = 2) => {
   const start = new Node(packageName, version, 1);
   const graph = new Graph(start);
 
@@ -64,7 +74,7 @@ export const getNpmDepGraph = async (packageName, version, maxDepth = 5) => {
       for (const [name, version] of Object.entries(dependencies)) {
         const child = new Node(name, version, node.depth + 1);
         graph.addEdge(node, child);
-        console.log(node, child);
+        // console.log(node, child);
         if (!visited.has(child)) {
           visited.add(child);
           queue.push(child);

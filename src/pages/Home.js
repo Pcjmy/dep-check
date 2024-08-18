@@ -3,25 +3,27 @@ import { getPackageDependencies } from '../utils/dep';
 import { getNpmDepGraph } from '../utils/graph';
 import DirectedGraph from './components/DirectedGraph';
 
-const nodes = [
-  { id: "Node 1", color: "red" },
-  { id: "Node 2", color: "orange" },
-  { id: "Node 3", color: "aqua" },
-  { id: "Node 4", color: "pink" },
-  { id: "Node 5", color: "purple" },
-];
+// const nodes = [
+//   { id: "Node 1", color: "red" },
+//   { id: "Node 2", color: "orange" },
+//   { id: "Node 3", color: "aqua" },
+//   { id: "Node 4", color: "pink" },
+//   { id: "Node 5", color: "purple" },
+// ];
 
-const links = [
-  { source: "Node 1", target: "Node 2" },
-  { source: "Node 2", target: "Node 3" },
-  { source: "Node 3", target: "Node 4" },
-  { source: "Node 4", target: "Node 1" },
-  { source: "Node 5", target: "Node 2" }
-];
+// const links = [
+//   { source: "Node 1", target: "Node 2" },
+//   { source: "Node 2", target: "Node 3" },
+//   { source: "Node 3", target: "Node 4" },
+//   { source: "Node 4", target: "Node 1" },
+//   { source: "Node 5", target: "Node 2" }
+// ];
 
 const Home = () => {
   const [packageName, setPackageName] = useState('');
   const [dependencies, setDependencies] = useState(null);
+  const [nodes, setNodes] = useState([]);
+  const [links, setLinks] = useState([]);
 
   const handleClick = async () => {
     const dependencies = await getPackageDependencies(packageName);
@@ -30,8 +32,12 @@ const Home = () => {
 
   useEffect(() => {
     const getDependencies = async () => {
-      const graph = await getNpmDepGraph('antd', '5.0.0');
+      const graph = await getNpmDepGraph('vue', '3.0.0');
       console.log('graph=', graph);
+      const { nodes, links } = graph.bfs();
+      setNodes(nodes);
+      setLinks(links);
+      console.log(nodes, links);
     }
     getDependencies();
   }, [])

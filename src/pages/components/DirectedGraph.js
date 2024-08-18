@@ -4,6 +4,9 @@ import './DirectedGraph.css';  // 引入样式文件
 
 function DirectedGraph({ nodes, links }) {  // 从props中获取nodes和links
   useEffect(() => {
+    // 删除旧的SVG元素
+    d3.select("#d3-container").select("svg").remove();
+
     const svg = d3.select("#d3-container")
       .append("svg")
       .attr("width", "100%")
