@@ -30,10 +30,11 @@ class Graph {
   }
 
   bfs() {
+    const colors = ['red', 'aqua', 'orange', 'yellow', 'pink', 'purple']
     const nodes = []
     const links = []
     const queue = [this.start];
-    const start_node = {id: `${this.start.name}@${this.start.version}`, color: 'red'};
+    const start_node = {id: `${this.start.name}@${this.start.version}`, color: colors[0]};
     nodes.push(start_node)
     const visited = new Set();
     visited.add(start_node.id);
@@ -43,8 +44,8 @@ class Graph {
       // console.log(node);
       const neighbors = this.adjacencyList.get(node);
       for (const neighbor of neighbors) {
-        const v1 = {id: `${node.name}@${node.version}`, color:'red'}
-        const v2 = {id: `${neighbor.name}@${neighbor.version}`, color:'red'}
+        const v1 = {id: `${node.name}@${node.version}`, color: colors[node.depth - 1]}
+        const v2 = {id: `${neighbor.name}@${neighbor.version}`, color: colors[neighbor.depth - 1]}
         if (!visited.has(v2.id)) {
           links.push({source: v1.id, target: v2.id})
           nodes.push(v2);
