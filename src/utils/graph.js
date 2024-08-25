@@ -1,4 +1,4 @@
-import { getPackageDependencies, getVersion } from './dep';
+import { getPackageDependencies, getLatestVersion, getVersion } from './dep';
 
 class Node {
   constructor(name, version, depth) {
@@ -60,7 +60,11 @@ class Graph {
 }
 
 export const getNpmDepGraph = async (packageName, version, maxDepth = 2) => {
-  const start = new Node(packageName, version, 1);
+  let packageVersion = version;
+  if (packageVersion === 'latest') {
+    packageVersion = await getLatestVersion(packageName);
+  }
+  const start = new Node(packageName, packageVersion, 1);
   const graph = new Graph(start);
 
   const queue = [start];

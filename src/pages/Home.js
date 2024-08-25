@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getPackageDependencies } from '../utils/dep';
 import { getNpmDepGraph } from '../utils/graph';
+import { Input, Button } from 'antd';
 import DirectedGraph from './components/DirectedGraph';
+import './Home.css';
 
 // const nodes = [
 //   { id: "Node 1", color: "red" },
@@ -21,28 +22,33 @@ import DirectedGraph from './components/DirectedGraph';
 
 const Home = () => {
   const [packageName, setPackageName] = useState('');
-  const [dependencies, setDependencies] = useState(null);
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);
 
-  const handleClick = async () => {
-    const dependencies = await getPackageDependencies(packageName);
-    setDependencies(dependencies);
+  const getDependencies = async () => {
+    const graph = await getNpmDepGraph(packageName || 'vue', 'latest');
+    console.log('graph=', graph);
+    const { nodes, links } = graph.bfs();
+    setNodes(nodes);
+    setLinks(links);
+    console.log(nodes, links);
   }
 
   useEffect(() => {
-    const getDependencies = async () => {
-      const graph = await getNpmDepGraph('vue', '3.0.0');
-      console.log('graph=', graph);
-      const { nodes, links } = graph.bfs();
-      setNodes(nodes);
-      setLinks(links);
-      console.log(nodes, links);
-    }
     getDependencies();
   }, [])
 
-  return <DirectedGraph nodes={nodes} links={links} />;
+  return (
+    <div className="container">
+      <div className="header">
+        <Input placeholder="please input package name" value={packageName} onChange={e => setPackageName(e.target.value)} />
+        <div className="search-btn">
+          <Button type="primary" onClick={getDependencies}>查询</Button>
+        </div>
+      </div>
+      <DirectedGraph nodes={nodes} links={links} />
+    </div>
+  );
 
   // return (
   //   <div>

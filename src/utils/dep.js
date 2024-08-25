@@ -9,6 +9,15 @@ export const getPackageDependencies = async (packageName, version) => {
   }
 };
 
+export const getLatestVersion = async (packageName) => {
+  try {
+    const response = await axios.get(`https://registry.npmjs.org/${packageName}`);
+    return response.data['dist-tags'].latest;
+  } catch (error) {
+    console.error('Failed to fetch package info', error);
+  }
+};
+
 export const getVersion = (version) => {
   version = version.replace(/[\^~]/g, '');
   version = version.replace(/-.+$/, '');
