@@ -43,14 +43,17 @@ class Graph {
       const node = queue.shift();
       // console.log(node);
       const neighbors = this.adjacencyList.get(node);
-      for (const neighbor of neighbors) {
-        const v1 = {id: `${node.name}@${node.version}`, color: colors[node.depth - 1]}
-        const v2 = {id: `${neighbor.name}@${neighbor.version}`, color: colors[neighbor.depth - 1]}
-        if (!visited.has(v2.id)) {
-          links.push({source: v1.id, target: v2.id})
-          nodes.push(v2);
-          visited.add(v2.id);
-          queue.push(neighbor);
+      console.log('neighbors=', neighbors);
+      if (neighbors) {
+        for (const neighbor of neighbors) {
+          const v1 = {id: `${node.name}@${node.version}`, color: colors[node.depth - 1]}
+          const v2 = {id: `${neighbor.name}@${neighbor.version}`, color: colors[neighbor.depth - 1]}
+          if (!visited.has(v2.id)) {
+            links.push({source: v1.id, target: v2.id})
+            nodes.push(v2);
+            visited.add(v2.id);
+            queue.push(neighbor);
+          }
         }
       }
     }
